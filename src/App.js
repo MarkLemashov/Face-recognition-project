@@ -19,6 +19,7 @@ class App extends React.Component {
     this.state = {
       input: '',
       imgURL: '',
+      predictions: 'Results',
     }
   }
 
@@ -34,10 +35,17 @@ class App extends React.Component {
     })
     .then(response => {
       // var concepts = response['outputs'][0]['data']['concepts']
-      console.log(response['outputs'][0]['data']['concepts'][0]['name']);
-      console.log(response['outputs'][0]['data']['concepts'][1]['name']);
-      console.log(response['outputs'][0]['data']['concepts'][2]['name']);
-      console.log(response['outputs'][0]['data']['concepts'][3]['name']);
+      // console.log(response['outputs'][0]['data']['concepts'][0]['name']);
+      // console.log(response['outputs'][0]['data']['concepts'][1]['name']);
+      // console.log(response['outputs'][0]['data']['concepts'][2]['name']);
+      // console.log(response['outputs'][0]['data']['concepts'][3]['name']);
+      let predictions = '';
+      for(let i = 0; i < 3; i++) {
+        predictions = predictions + ' ' + response['outputs'][0]['data']['concepts'][i]['name'];
+      }
+
+      this.setState({predictions: predictions});
+      console.log(this.state.predictions);
     })
 
   }
@@ -49,7 +57,7 @@ class App extends React.Component {
       <Navigation/>
       <Logo/>
       <Rank/>
-      <ImageLinkForm onInputChange={this.onInputChange} onDetectPress={this.onDetectPress}/>
+      <ImageLinkForm predictions={this.state.predictions} onInputChange={this.onInputChange} onDetectPress={this.onDetectPress}/>
       <FaceRecognition imgURL={this.state.imgURL}/> 
       </div>
       );

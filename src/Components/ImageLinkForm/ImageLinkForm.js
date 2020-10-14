@@ -5,7 +5,7 @@ const ImageLinkForm = (props) => {
     return (
         <div>
             <p className='f3'>
-                {'Creedies first project. OMG COOL!'}
+                {props.predictions}
             </p>
             <div className='center'>
                 <div className='center pa4 br3 shadow-3 form taalul'>
