@@ -1,16 +1,16 @@
 import React from 'react';
 import './ImageLinkForm.css';
 
-const ImageLinkForm = () => {
+const ImageLinkForm = (props) => {
     return (
-        <div className='taalul'>
+        <div>
             <p className='f3'>
                 {'Creedies first project. OMG COOL!'}
             </p>
-            <div className='center taalul'>
+            <div className='center'>
                 <div className='center pa4 br3 shadow-3 form taalul'>
-                    <input className="f4 pa2 w-70 center" type="text" />
-                    <button className="w-30 f4 link ph3 pv2 dib grow white bg-light-purple">Detect</button>
+                    <input className="f4 pa2 w-70 center" type="text" onChange={props.onInputChange}/>
+                    <button className="w-30 f4 link ph3 pv2 dib grow white bg-light-purple" onClick={props.onDetectPress}>Detect</button>
                 </div>
             </div>
         </div>
