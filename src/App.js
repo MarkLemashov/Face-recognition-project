@@ -51,7 +51,7 @@ class App extends React.Component {
   }
 
   onDetectPress = () => {
-    this.setState({imgURL: this.state.input})
+    this.setState({imgURL: this.state.input, boxes: []})
     app.models.predict(
       Clarifai.FACE_DETECT_MODEL,
       this.state.input)
