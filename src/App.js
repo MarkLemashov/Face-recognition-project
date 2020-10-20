@@ -19,7 +19,7 @@ class App extends React.Component {
     this.state = {
       input: '',
       imgURL: '',
-      predictions: 'Results',
+      boxes: [],
     }
   }
 
@@ -27,27 +27,39 @@ class App extends React.Component {
     this.setState({input: event.target.value});
   }
 
+  calculateBoxes = (data) => {
+    const boxes = [];
+    const img = document.getElementById('mainImg');
+    const height = Number(img.height);
+    const width = Number(img.width);
+
+    data.outputs[0].data.regions.forEach(element => {
+      boxes.push({
+        top: element.region_info.bounding_box.top_row * height,
+        left: element.region_info.bounding_box.left_col * width,
+        bottom: height - element.region_info.bounding_box.bottom_row * height,
+        right: width - element.region_info.bounding_box.right_col * width,
+      });
+    })
+
+    return boxes;
+
+  }
+
+  displayBoxes = (boxes) => {
+    this.setState({boxes: boxes});
+  }
+
   onDetectPress = () => {
     this.setState({imgURL: this.state.input})
-    app.models.initModel({id: Clarifai.GENERAL_MODEL, version: "aa7f35c01e0642fda5cf400f543e7c40"})
-    .then(generalModel => {
-      return generalModel.predict(this.state.imgURL);
-    })
-    .then(response => {
-      // var concepts = response['outputs'][0]['data']['concepts']
-      // console.log(response['outputs'][0]['data']['concepts'][0]['name']);
-      // console.log(response['outputs'][0]['data']['concepts'][1]['name']);
-      // console.log(response['outputs'][0]['data']['concepts'][2]['name']);
-      // console.log(response['outputs'][0]['data']['concepts'][3]['name']);
-      let predictions = '';
-      for(let i = 0; i < 3; i++) {
-        predictions = predictions + ' ' + response['outputs'][0]['data']['concepts'][i]['name'];
-      }
-
-      this.setState({predictions: predictions});
-      console.log(this.state.predictions);
-    })
-
+    app.models.predict(
+      Clarifai.FACE_DETECT_MODEL,
+      this.state.input)
+      .then(response => {
+        this.displayBoxes(this.calculateBoxes(response));
+        }
+      )
+      .catch(err => console.log(err))
   }
 
   render() { 
@@ -58,7 +70,7 @@ class App extends React.Component {
       <Logo/>
       <Rank/>
       <ImageLinkForm predictions={this.state.predictions} onInputChange={this.onInputChange} onDetectPress={this.onDetectPress}/>
-      <FaceRecognition imgURL={this.state.imgURL}/> 
+      <FaceRecognition boxes={this.state.boxes} imgURL={this.state.imgURL}/> 
       </div>
       );
     }
