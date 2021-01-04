@@ -4,9 +4,9 @@ import '../FaceBoxes/FaceBoxes.css'
 
 const FaceRecognition = ({imgURL, boxes}) => {
     return (
-        <div className='center ma'>
+        <div className='custom_center ma'>
             <div className='absolute mt2'>
-                <img id='mainImg' src={imgURL} height='500px' width='auto'/>
+                <img id='mainImg' alt='' src={imgURL} height='500px' width='auto'/>
                 <FaceBoxes boxes={boxes}/>
             </div>
         </div>
