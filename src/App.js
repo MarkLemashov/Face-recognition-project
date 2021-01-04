@@ -85,7 +85,7 @@ class App extends React.Component {
     user.entries++;
     this.setState({user: user});
 
-    fetch('http://localhost:3001/image', {
+    fetch('https://evening-depths-86865.herokuapp.com/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
