@@ -59,7 +59,6 @@ class App extends React.Component {
   }
 
   calculateBoxes = (data) => {
-    console.log('calculate boxes:', data);
     const boxes = [];
     const img = document.getElementById('mainImg');
     const height = Number(img.height);
@@ -95,23 +94,13 @@ class App extends React.Component {
   })
   .then(response => response.json())
   .then(response => {
-    console.log(response);
     this.displayBoxes(this.calculateBoxes(response));
     let user = this.state.user;
     user.entries++;
     this.setState({user: user});
     sessionStorage.setItem('state', JSON.stringify(this.state));
   })
-  .catch(err => console.log(err));
-    // app.models.predict(
-    //   Clarifai.FACE_DETECT_MODEL,
-    //   this.state.input)
-    //   .then(response => {
-    //     this.updateUserEntries();
-    //     this.displayBoxes(this.calculateBoxes(response));
-    //     }
-    //   )
-    //   .catch(err => console.log(err))
+  .catch(err => console.log('error loading image'));
   }
 
   onRouteChange = (route) => {
