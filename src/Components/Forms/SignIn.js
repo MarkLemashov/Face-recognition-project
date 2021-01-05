@@ -1,4 +1,5 @@
 import React from 'react';
+import ENDPOINTS from '../../constants';
 
 class SignInForm extends React.Component {
     constructor(props){
@@ -18,7 +19,7 @@ class SignInForm extends React.Component {
     }
 
     onSignInSubmit = () => {
-        fetch('https://evening-depths-86865.herokuapp.com/signin', {
+        fetch(ENDPOINTS.BASE + ENDPOINTS.SIGNIN, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

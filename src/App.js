@@ -6,14 +6,10 @@ import ImageLinkForm from './Components/ImageLinkForm/ImageLinkForm.js'
 import Rank from './Components/Rank/Rank.js'
 import Particles from 'react-particles-js';
 import ParticleParams from './Particles.js';
-import Clarifai from 'clarifai';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition.js';
 import SignInForm from './Components/Forms/SignIn';
 import RegisterForm from './Components/Forms/Register';
-
-const app = new Clarifai.App({
-  apiKey: '585d42f3bab543ebb7c64425508f87fc'
- });
+import ENDPOINTS from './constants';
 
  const initialState = {
   input: '',
@@ -53,11 +49,17 @@ class App extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    sessionStorage.setItem('state', JSON.stringify(this.state));
+  }
+
+
   onInputChange = (event) => {
     this.setState({input: event.target.value});
   }
 
   calculateBoxes = (data) => {
+    console.log('calculate boxes:', data);
     const boxes = [];
     const img = document.getElementById('mainImg');
     const height = Number(img.height);
@@ -80,31 +82,36 @@ class App extends React.Component {
     this.setState({boxes: boxes});
   }
 
-  updateUserEntries = () => {
+  onDetectPress = () => {
+    this.setState({imgURL: this.state.input, boxes: []})
+
+    fetch(ENDPOINTS.BASE + ENDPOINTS.SUBMIT_IMAGE, {
+      method: 'put',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+          email: this.state.user.email,
+          image_url: this.state.input,
+      })
+  })
+  .then(response => response.json())
+  .then(response => {
+    console.log(response);
+    this.displayBoxes(this.calculateBoxes(response));
     let user = this.state.user;
     user.entries++;
     this.setState({user: user});
-
-    fetch('https://evening-depths-86865.herokuapp.com/image', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              email: this.state.user.email,
-            })
-        })
-  }
-
-  onDetectPress = () => {
-    this.setState({imgURL: this.state.input, boxes: []})
-    app.models.predict(
-      Clarifai.FACE_DETECT_MODEL,
-      this.state.input)
-      .then(response => {
-        this.updateUserEntries();
-        this.displayBoxes(this.calculateBoxes(response));
-        }
-      )
-      .catch(err => console.log(err))
+    sessionStorage.setItem('state', JSON.stringify(this.state));
+  })
+  .catch(err => console.log(err));
+    // app.models.predict(
+    //   Clarifai.FACE_DETECT_MODEL,
+    //   this.state.input)
+    //   .then(response => {
+    //     this.updateUserEntries();
+    //     this.displayBoxes(this.calculateBoxes(response));
+    //     }
+    //   )
+    //   .catch(err => console.log(err))
   }
 
   onRouteChange = (route) => {

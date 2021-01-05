@@ -1,4 +1,5 @@
 import React from 'react';
+import ENDPOINTS from '../../constants';
 
 class RegisterForm extends React.Component {
     constructor(props){
@@ -23,7 +24,7 @@ class RegisterForm extends React.Component {
     }
 
     onSubmitRegister = () => {
-        fetch('https://evening-depths-86865.herokuapp.com/register', {
+        fetch(ENDPOINTS.BASE + ENDPOINTS.REGISTER, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
