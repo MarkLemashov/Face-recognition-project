@@ -127,7 +127,7 @@ class App extends React.Component {
         return <SignInForm loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
       case 'home':
         return (
-        <div>
+        <div className='harta'>
           <Logo/>
           <Rank user={this.state.user}/>
           <ImageLinkForm predictions={this.state.predictions} onInputChange={this.onInputChange} onDetectPress={this.onDetectPress}/>

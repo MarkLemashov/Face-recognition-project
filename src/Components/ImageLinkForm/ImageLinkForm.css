@@ -14,10 +14,30 @@ background-size: 40px 60px;
 
 }
 
+.shrinks2{
+
+}
+
 @media only screen and (max-width:700px){
     .shrinks {
         font-size: 1.25em !important;
         padding: 22px !important;
         width: 95%;
+    }
+
+    .shrinks2{
+        font-size: 0.8em !important;
+    }
+  }
+
+  @media only screen and (max-width:400px){
+    .shrinks {
+        font-size: 1.08em !important;
+        padding: 11px !important;
+        width: 95%;
+    }
+
+    .shrinks2{
+        font-size: 0.62em !important;
     }
   }

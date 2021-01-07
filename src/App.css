@@ -2,12 +2,6 @@
   text-align: center;
 }
 
-.custom_center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 button {
   cursor: pointer;
 }
@@ -26,10 +20,13 @@ button {
   width: auto;
 }
 
-@media only screen and (max-width:700px){
-  .image_link {
-      font-size: 0.6em;
-      padding: 0px;
-      transition: all 0.0s linear;
-  }
+.harta {
+  position: relatiive;
+}
+
+.custom_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 210px;
 }
