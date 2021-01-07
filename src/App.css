@@ -5,6 +5,7 @@
 .custom_center {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 button {
@@ -23,4 +24,12 @@ button {
 .taalul {
   height: auto;
   width: auto;
+}
+
+@media only screen and (max-width:700px){
+  .image_link {
+      font-size: 0.6em;
+      padding: 0px;
+      transition: all 0.0s linear;
+  }
 }
