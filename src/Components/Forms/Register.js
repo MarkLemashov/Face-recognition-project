@@ -41,6 +41,12 @@ class RegisterForm extends React.Component {
         })
     }
 
+    onKeyUp = (event) => {
+        if(event.key === 'Enter'){
+            this.onSubmitRegister();
+        }
+    }
+
     
     render() {
         return (
@@ -59,7 +65,7 @@ class RegisterForm extends React.Component {
                             </div>
                             <div className='mv3'>
                                 <label className='db fw6 lh-copy f6' htmlFor='password'>Password</label>
-                                <input className='b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-70 br2' onChange={this.onPasswordChange} type='password' name='password' id='password' />
+                                <input className='b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-70 br2' onKeyUp={this.onKeyUp} onChange={this.onPasswordChange} type='password' name='password' id='password' />
                             </div>
                         </fieldset>
                         <div className=''>

@@ -15,7 +15,8 @@ class SignInForm extends React.Component {
     }
 
     onPasswordChange = (event) => {
-        this.setState({signInPassword: event.target.value})
+        console.log(event.key);
+        this.setState({signInPassword: event.target.value});
     }
 
     onSignInSubmit = () => {
@@ -40,6 +41,12 @@ class SignInForm extends React.Component {
         })
     }
 
+    onKeyUp = (event) => {
+        if(event.key === 'Enter'){
+            this.onSignInSubmit();
+        }
+    }
+
     render() {
         const {onRouteChange} = this.props;
         return (
@@ -62,7 +69,9 @@ class SignInForm extends React.Component {
                                  type='password'
                                  name='password'
                                  id='password'
-                                 onChange={this.onPasswordChange} />
+                                 onChange={this.onPasswordChange} 
+                                 onKeyUp={this.onKeyUp} 
+                                 />
                             </div>
                         </fieldset>
                         <div className=''>
