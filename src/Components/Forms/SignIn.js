@@ -6,7 +6,8 @@ class SignInForm extends React.Component {
         super(props);
         this.state = {
             signInEmail: '',
-            signInPassword: ''
+            signInPassword: '',
+            errorMessage: '',
         }
     }
 
@@ -15,7 +16,6 @@ class SignInForm extends React.Component {
     }
 
     onPasswordChange = (event) => {
-        console.log(event.key);
         this.setState({signInPassword: event.target.value});
     }
 
@@ -29,7 +29,13 @@ class SignInForm extends React.Component {
             })
         })
         .then(response => {
-            if(response.status === 200) {
+            if(response.status !== 200) {
+                response.json().then(data => {
+                        this.setState({errorMessage: data})
+                    }
+                )
+            }
+            else {
                 return response.json();
             }
         })
@@ -79,6 +85,7 @@ class SignInForm extends React.Component {
                         </div>
                         <div className='lh-copy mt3'>
                             <p className='f6 link dim black db pointer' onClick={() => onRouteChange('register')}>Register</p>
+                            <p className="error_text">{this.state.errorMessage}</p>
                         </div>
                     </div>
                 </main>

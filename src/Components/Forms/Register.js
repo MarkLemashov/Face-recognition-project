@@ -8,6 +8,7 @@ class RegisterForm extends React.Component {
             registerName: '',
             registerEmail: '',
             registerPassword: '',
+            errorMessage: '',
         }
     }
 
@@ -37,6 +38,9 @@ class RegisterForm extends React.Component {
         .then(data => {
             if(data === 'success'){
                 this.props.onRouteChange('signin');
+            }
+            else {
+                this.setState({errorMessage: data});
             }
         })
     }
@@ -68,8 +72,9 @@ class RegisterForm extends React.Component {
                                 <input className='b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-70 br2' onKeyUp={this.onKeyUp} onChange={this.onPasswordChange} type='password' name='password' id='password' />
                             </div>
                         </fieldset>
-                        <div className=''>
+                        <div>
                             <input className='b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib br2' onClick={this.onSubmitRegister} type='submit' value='Register' />
+                            <p className='error_text'>{this.state.errorMessage}</p>
                         </div>
                     </div>
                 </main>

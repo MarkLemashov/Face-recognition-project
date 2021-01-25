@@ -30,3 +30,10 @@ button {
   align-items: center;
   margin-top: 210px;
 }
+
+.error_text {
+  color: rgb(202, 4, 4);
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
