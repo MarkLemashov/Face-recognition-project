@@ -1,4 +1,5 @@
 import React from 'react';
+import './Navigation.css';
 
 const Navigation = ({onRouteChange, isSignedIn}) => {
     return(
@@ -9,8 +10,8 @@ const Navigation = ({onRouteChange, isSignedIn}) => {
         </nav>
         :
         <nav style={{display: 'flex', justifyContent: 'flex-end'}}>
-        <p className='f3 link dim black underline pointer pr3' onClick={() => onRouteChange('register')}>Register</p>
-        <p className='f3 link dim black underline pointer' onClick={() => onRouteChange('signin')}>Sign In</p>
+        <p className='nav_btn f3 link black pointer pr3' onClick={() => onRouteChange('register')}>Register</p>
+        <p className='nav_btn f3 link black pointer' onClick={() => onRouteChange('signin')}>Sign In</p>
         </nav>
         )
 }
