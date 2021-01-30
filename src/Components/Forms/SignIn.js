@@ -8,6 +8,7 @@ class SignInForm extends React.Component {
             signInEmail: '',
             signInPassword: '',
             errorMessage: '',
+            loading: false,
         }
     }
 
@@ -20,6 +21,7 @@ class SignInForm extends React.Component {
     }
 
     onSignInSubmit = () => {
+        this.setState({loading: true, errorMessage: ''});
         fetch(ENDPOINTS.BASE + ENDPOINTS.SIGNIN, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -29,6 +31,7 @@ class SignInForm extends React.Component {
             })
         })
         .then(response => {
+            this.setState({loading: false});
             if(response.status !== 200) {
                 response.json().then(data => {
                         this.setState({errorMessage: data})
@@ -85,7 +88,9 @@ class SignInForm extends React.Component {
                         </div>
                         <div className='lh-copy mt3'>
                             <p className='f6 link dim black db pointer' onClick={() => onRouteChange('register')}>Register</p>
-                            <p className="error_text">{this.state.errorMessage}</p>
+                            { 
+                                this.state.loading ? <div class="lds-ring"><div></div><div></div><div></div><div></div></div> : <p className='error_text'>{this.state.errorMessage}</p>
+                            }
                         </div>
                     </div>
                 </main>

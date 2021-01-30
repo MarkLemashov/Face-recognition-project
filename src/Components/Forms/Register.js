@@ -9,6 +9,7 @@ class RegisterForm extends React.Component {
             registerEmail: '',
             registerPassword: '',
             errorMessage: '',
+            loading: false,
         }
     }
 
@@ -25,6 +26,7 @@ class RegisterForm extends React.Component {
     }
 
     onSubmitRegister = () => {
+        this.setState({loading: true, errorMessage: ''});
         fetch(ENDPOINTS.BASE + ENDPOINTS.REGISTER, {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
@@ -34,7 +36,10 @@ class RegisterForm extends React.Component {
                 password: this.state.registerPassword,
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            this.setState({loading: false});
+            return response.json();
+        })
         .then(data => {
             if(data === 'success'){
                 this.props.onRouteChange('signin');
@@ -74,7 +79,9 @@ class RegisterForm extends React.Component {
                         </fieldset>
                         <div>
                             <input className='b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib br2' onClick={this.onSubmitRegister} type='submit' value='Register' />
-                            <p className='error_text'>{this.state.errorMessage}</p>
+                            { 
+                                this.state.loading ? <div class="lds-ring"><div></div><div></div><div></div><div></div></div> : <p className='error_text'>{this.state.errorMessage}</p>
+                            }
                         </div>
                     </div>
                 </main>
