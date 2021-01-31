@@ -8,7 +8,10 @@ const Rank = ({user}) => {
                 <span className='capitalize'>{user.name}</span>
             </div>
             <div className='white f3'>
-                {'You have submitted ' + user.entries + ' images.'}
+                {'Images submitted: ' + user.entries}
+            </div>
+            <div className='white f4'>
+                {'Faces detected: ' + user.faces_detected}
             </div>
         </div>
     )

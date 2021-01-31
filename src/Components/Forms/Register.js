@@ -46,6 +46,7 @@ class RegisterForm extends React.Component {
                     name: this.state.registerName,
                     email: this.state.registerEmail,
                     entries: 0,
+                    faces_detected: 0,
                     joined: new Date(),
                   });
                 this.props.onRouteChange('home');

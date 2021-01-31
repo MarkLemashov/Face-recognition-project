@@ -20,6 +20,7 @@ import ENDPOINTS from './constants';
     name: '',
     email: '',
     entries: 0,
+    faces_detected: 0,
     joined: '',
   },
   route: 'signin',
@@ -37,6 +38,7 @@ class App extends React.Component {
         name: '',
         email: '',
         entries: 0,
+        faces_detected: 0,
         joined: '',
       },
       route: 'signin',
@@ -92,11 +94,14 @@ class App extends React.Component {
           image_url: this.state.input,
       })
   })
-  .then(response => response.json())
+  .then(response => {
+    return response.json();
+    })
   .then(response => {
     this.displayBoxes(this.calculateBoxes(response));
     let user = this.state.user;
     user.entries++;
+    user.faces_detected = response.outputs[0].data.regions.length + Number(user.faces_detected);
     this.setState({user: user});
     sessionStorage.setItem('state', JSON.stringify(this.state));
   })
