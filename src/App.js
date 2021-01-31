@@ -60,13 +60,13 @@ class App extends React.Component {
     this.setState({input: event.target.value});
   }
 
-  calculateBoxes = (data) => {
+  calculateBoxes = (regions) => {
     const boxes = [];
     const img = document.getElementById('mainImg');
     const height = Number(img.height);
     const width = Number(img.width);
 
-    data.outputs[0].data.regions.forEach(element => {
+    regions.forEach(element => {
       boxes.push({
         top: element.region_info.bounding_box.top_row * height,
         left: element.region_info.bounding_box.left_col * width,
@@ -97,11 +97,11 @@ class App extends React.Component {
   .then(response => {
     return response.json();
     })
-  .then(response => {
-    this.displayBoxes(this.calculateBoxes(response));
+  .then(regions => {
+    this.displayBoxes(this.calculateBoxes(regions));
     let user = this.state.user;
     user.entries++;
-    user.faces_detected = response.outputs[0].data.regions.length + Number(user.faces_detected);
+    user.faces_detected = regions.length + Number(user.faces_detected);
     this.setState({user: user});
     sessionStorage.setItem('state', JSON.stringify(this.state));
   })
