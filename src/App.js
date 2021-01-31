@@ -134,7 +134,7 @@ class App extends React.Component {
           <FaceRecognition boxes={this.state.boxes} imgURL={this.state.imgURL}/>
         </div>)
       case 'register':
-        return <RegisterForm onRouteChange={this.onRouteChange}/>
+        return <RegisterForm onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
       
       default:
          return <div></div>

@@ -37,12 +37,18 @@ class RegisterForm extends React.Component {
             })
         })
         .then(response => {
-            this.setState({loading: false});
+            this.setState({loading: false, errorMessage: ''});
             return response.json();
         })
         .then(data => {
             if(data === 'success'){
-                this.props.onRouteChange('signin');
+                this.props.loadUser({
+                    name: this.state.registerName,
+                    email: this.state.registerEmail,
+                    entries: 0,
+                    joined: new Date(),
+                  });
+                this.props.onRouteChange('home');
             }
             else {
                 this.setState({errorMessage: data});
