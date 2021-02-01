@@ -24,6 +24,7 @@ import ENDPOINTS from './constants';
     joined: '',
   },
   route: 'signin',
+  errorMessage: '',
 };
 
 class App extends React.Component {
@@ -42,6 +43,7 @@ class App extends React.Component {
         joined: '',
       },
       route: 'signin',
+      errorMessage: '',
     }
   }
 
@@ -84,7 +86,7 @@ class App extends React.Component {
   }
 
   onDetectPress = () => {
-    this.setState({imgURL: this.state.input, boxes: []})
+    this.setState({imgURL: this.state.input, boxes: [], errorMessage: ''})
 
     fetch(ENDPOINTS.BASE + ENDPOINTS.SUBMIT_IMAGE, {
       method: 'put',
@@ -105,7 +107,7 @@ class App extends React.Component {
     this.setState({user: user});
     sessionStorage.setItem('state', JSON.stringify(this.state));
   })
-  .catch(err => console.log('error loading image'));
+  .catch(err => this.setState({errorMessage: 'The server could not open the link you provided, please try a different one'}));
   }
 
   onRouteChange = (route) => {
@@ -136,6 +138,7 @@ class App extends React.Component {
           <Logo/>
           <Rank user={this.state.user}/>
           <ImageLinkForm predictions={this.state.predictions} onInputChange={this.onInputChange} onDetectPress={this.onDetectPress}/>
+          <div className="error_text">{this.state.errorMessage}</div>
           <FaceRecognition boxes={this.state.boxes} imgURL={this.state.imgURL}/>
         </div>)
       case 'register':
