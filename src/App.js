@@ -42,20 +42,42 @@ class App extends React.Component {
         faces_detected: 0,
         joined: '',
       },
-      route: 'signin',
+      route: (sessionStorage.getItem('accessToken') ? 'home' : 'signin'),
       errorMessage: '',
     }
   }
 
   componentDidMount() {
-    if(sessionStorage.getItem('state')) {
-      this.setState(JSON.parse(sessionStorage.getItem('state')));
+    if(sessionStorage.getItem('accessToken')) {
+
+      fetch(ENDPOINTS.BASE + ENDPOINTS.GET_USER, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `bearer ${sessionStorage.getItem('accessToken')}`
+        }
+      })
+      .then(response => {
+        if(response.status === 200) {
+          return response.json();
+        }
+        else {
+          throw new Error('Error');
+        }
+      })
+      .then(user => {
+        this.setState({user: user, isSignedIn: true, route: 'home'});
+      })
+      .catch(err => {
+        sessionStorage.removeItem('accessToken');
+        this.resetState();
+      })
     }
   }
 
-  componentWillUnmount() {
-    sessionStorage.setItem('state', JSON.stringify(this.state));
-  }
+  // componentWillUnmount() {
+  //   sessionStorage.setItem('state', JSON.stringify(this.state));
+  // }
 
 
   onInputChange = (event) => {
@@ -90,22 +112,28 @@ class App extends React.Component {
 
     fetch(ENDPOINTS.BASE + ENDPOINTS.SUBMIT_IMAGE, {
       method: 'put',
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `bearer ${sessionStorage.getItem('accessToken')}`
+      },
       body: JSON.stringify({
           email: this.state.user.email,
           image_url: this.state.input,
       })
   })
   .then(response => {
-    return response.json();
+    if(response.status === 401) {
+      this.resetState();
+      this.onRouteChange('signin');
+    }
+    else {
+      return response.json();
+    }
     })
-  .then(regions => {
-    this.displayBoxes(this.calculateBoxes(regions));
-    let user = this.state.user;
-    user.entries++;
-    user.faces_detected = regions.length + Number(user.faces_detected);
-    this.setState({user: user});
-    sessionStorage.setItem('state', JSON.stringify(this.state));
+  .then(data => {
+    this.displayBoxes(this.calculateBoxes(data.regions));
+    this.setState({user: data.user});
+    // sessionStorage.setItem('state', JSON.stringify(this.state));
   })
   .catch(err => this.setState({errorMessage: 'The server could not open the link you provided, please try a different one'}));
   }
@@ -113,18 +141,22 @@ class App extends React.Component {
   onRouteChange = (route) => {
     this.setState({route: route});
     if(route === 'signout'){
-      this.setState(initialState);
+      this.resetState();
       this.setState({isSignedIn: false});
-      sessionStorage.removeItem('state');
+      sessionStorage.removeItem('accessToken');
     }
     else if(route === 'home'){
       this.setState({isSignedIn: true});
-      sessionStorage.setItem('state', JSON.stringify(this.state));
+      // sessionStorage.setItem('state', JSON.stringify(this.state));
     }
   }
 
   loadUser = (user) => {
     this.setState({user: user})
+  }
+
+  resetState = () => {
+    this.setState(initialState);
   }
 
   displayRoute = () => {

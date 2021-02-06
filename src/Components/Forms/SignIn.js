@@ -44,7 +44,8 @@ class SignInForm extends React.Component {
         })
         .then(data => {
             if(data){
-                this.props.loadUser(data[0]);
+                this.props.loadUser(data.user);
+                sessionStorage.setItem('accessToken', data.accessToken);
                 this.props.onRouteChange('home');
             }
         })
@@ -89,7 +90,7 @@ class SignInForm extends React.Component {
                         <div className='lh-copy mt3'>
                             <p className='f6 link dim black db pointer' onClick={() => onRouteChange('register')}>Register</p>
                             { 
-                                this.state.loading ? <div class="lds-ring"><div></div><div></div><div></div><div></div></div> : <p className='error_text'>{this.state.errorMessage}</p>
+                                this.state.loading ? <div className="lds-ring"><div></div><div></div><div></div><div></div></div> : <p className='error_text'>{this.state.errorMessage}</p>
                             }
                         </div>
                     </div>

@@ -3,6 +3,7 @@ const ENDPOINTS = {
     SIGNIN: 'signin',
     REGISTER: 'register',
     SUBMIT_IMAGE: 'image',
+    GET_USER: 'getuser',
 }
 
 export default ENDPOINTS;
