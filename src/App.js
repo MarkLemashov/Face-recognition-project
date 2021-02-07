@@ -42,12 +42,15 @@ class App extends React.Component {
         faces_detected: 0,
         joined: '',
       },
-      route: (sessionStorage.getItem('accessToken') ? 'home' : 'signin'),
+      route: 'signin',
       errorMessage: '',
     }
   }
 
   componentDidMount() {
+    if(sessionStorage.getItem('state')) {
+      this.setState(JSON.parse(sessionStorage.getItem('state')));
+    }
     if(sessionStorage.getItem('accessToken')) {
 
       fetch(ENDPOINTS.BASE + ENDPOINTS.GET_USER, {
@@ -78,7 +81,6 @@ class App extends React.Component {
   // componentWillUnmount() {
   //   sessionStorage.setItem('state', JSON.stringify(this.state));
   // }
-
 
   onInputChange = (event) => {
     this.setState({input: event.target.value});
@@ -117,7 +119,6 @@ class App extends React.Component {
         'Authorization': `bearer ${sessionStorage.getItem('accessToken')}`
       },
       body: JSON.stringify({
-          email: this.state.user.email,
           image_url: this.state.input,
       })
   })
@@ -133,7 +134,7 @@ class App extends React.Component {
   .then(data => {
     this.displayBoxes(this.calculateBoxes(data.regions));
     this.setState({user: data.user});
-    // sessionStorage.setItem('state', JSON.stringify(this.state));
+    sessionStorage.setItem('state', JSON.stringify(this.state));
   })
   .catch(err => this.setState({errorMessage: 'The server could not open the link you provided, please try a different one'}));
   }
@@ -147,16 +148,18 @@ class App extends React.Component {
     }
     else if(route === 'home'){
       this.setState({isSignedIn: true});
-      // sessionStorage.setItem('state', JSON.stringify(this.state));
+      sessionStorage.setItem('state', JSON.stringify(this.state));
     }
   }
 
   loadUser = (user) => {
-    this.setState({user: user})
+    this.setState({user: user});
+    sessionStorage.setItem('state', JSON.stringify(this.state));
   }
 
   resetState = () => {
     this.setState(initialState);
+    sessionStorage.removeItem('state');
   }
 
   displayRoute = () => {
