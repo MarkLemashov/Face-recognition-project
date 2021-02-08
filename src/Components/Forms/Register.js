@@ -49,7 +49,7 @@ class RegisterForm extends React.Component {
                     faces_detected: 0,
                     joined: new Date(),
                   });
-                this.props.onRouteChange('home');
+                this.props.onRouteChange('signin');
             }
             else {
                 this.setState({errorMessage: data});
